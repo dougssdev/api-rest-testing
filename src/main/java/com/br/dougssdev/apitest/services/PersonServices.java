@@ -8,6 +8,7 @@ import com.br.dougssdev.apitest.exceptions.ResourceNotFoundException;
 import com.br.dougssdev.apitest.model.Person;
 import com.br.dougssdev.apitest.repos.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -16,9 +17,6 @@ public class PersonServices {
 
     @Autowired
     private PersonRepository repository;
-
-    private final AtomicLong counter = new AtomicLong();
-
 
     public List<Person> findAll() {
         return repository.findAll();
@@ -40,22 +38,21 @@ public class PersonServices {
         Person entity = repository.findById(person.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records for this person ID"));
 
-        entity.setId(counter.incrementAndGet());
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
-
+        entity.setEmail(person.getEmail());
 
         return repository.save(entity);
     }
 
-    public void delete(Long id) {
+    public ResponseEntity<?> delete(Long id) {
 
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records for this person ID"));
 
         repository.delete(entity);
-
+        return ResponseEntity.noContent().build();
     }
 }
