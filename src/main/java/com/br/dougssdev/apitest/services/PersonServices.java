@@ -2,6 +2,7 @@ package com.br.dougssdev.apitest.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.br.dougssdev.apitest.exceptions.ResourceNotFoundException;
@@ -29,6 +30,12 @@ public class PersonServices {
     }
 
     public Person create(Person person) {
+
+        Optional<Person> savedPerson = repository.findByEmail(person.getEmail());
+
+        if(savedPerson.isPresent()){
+            throw new ResourceNotFoundException("This person is already with given email: " + person.getEmail());
+        }
 
         return repository.save(person);
     }

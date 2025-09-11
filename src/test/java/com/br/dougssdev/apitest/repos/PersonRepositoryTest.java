@@ -20,7 +20,6 @@ public class PersonRepositoryTest {
     @Autowired
     private PersonRepository repository;
 
-
     private Person person0;
 
     @BeforeEach
