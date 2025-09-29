@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.br.dougssdev.apitest.model.Person;
@@ -23,8 +24,13 @@ public class PersonController {
     }
 
     @GetMapping (value = "/{id}")
-    public Person findById(@PathVariable(value = "id") Long id) {
-        return service.findById(id);
+    public ResponseEntity<Person> findById(@PathVariable(value = "id") Long id) {
+
+        try {
+            return ResponseEntity.ok(service.findById(id));
+        } catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
@@ -33,13 +39,19 @@ public class PersonController {
     }
 
     @PutMapping
-    public Person update(@RequestBody Person person) {
-        return service.update(person);
+    public ResponseEntity<Person> update(@RequestBody Person person) {
+        try {
+            return ResponseEntity.ok(service.update(person));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 
     @DeleteMapping (value = "/{id}")
-    public void delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Person> delete(@PathVariable(value = "id") Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

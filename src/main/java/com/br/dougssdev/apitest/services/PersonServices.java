@@ -54,12 +54,11 @@ public class PersonServices {
         return repository.save(entity);
     }
 
-    public ResponseEntity<?> delete(Long id) {
+    public void delete(Long id) {
 
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records for this person ID"));
 
         repository.delete(entity);
-        return ResponseEntity.noContent().build();
     }
 }
