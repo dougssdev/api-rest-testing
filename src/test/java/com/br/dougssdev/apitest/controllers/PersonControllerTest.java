@@ -71,6 +71,8 @@ public class PersonControllerTest {
                 .andExpect(jsonPath("$.firstName", is(person.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(person.getLastName())))
                 .andExpect(jsonPath("$.email", is(person.getEmail())));
+
+        verify(personServices).create(any(Person.class));
     }
 
     @Test
